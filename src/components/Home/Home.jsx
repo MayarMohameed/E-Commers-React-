@@ -1,122 +1,60 @@
 import { Link } from "react-router-dom";
 import { CatogarySlider } from "../CatogarySlider/CatogarySlider.jsx";
 import RecentPorducts from "../RecentPorducts/RecentPoducts.jsx";
-import { useMayar } from "../../Hooks/useMayar.jsx";
 
 export default function Home() {
-  const { data, isLoading } = useMayar();
-  const products = data?.data?.products || [];
-  const featuredProduct = products.length > 0 ? products[0] : null;
-  const discount = featuredProduct?.discountPercentage
-    ? Math.round(featuredProduct.discountPercentage)
-    : 20;
-  const originalPrice =
-    featuredProduct && discount
-      ? (featuredProduct.price / (1 - discount / 100)).toFixed(2)
-      : null;
-
   return (
     <div className="space-y-12 pb-16">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-emerald-950 via-slate-900 to-slate-900 text-white pt-12 pb-20 px-4 sm:px-6 lg:px-8 rounded-b-3xl sm:rounded-b-[2.5rem] shadow-xl">
-        {/* Background glow effects */}
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute bottom-0 left-10 w-80 h-80 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      {/* Hero Section with Photo Background */}
+      <section className="relative overflow-hidden min-h-[500px] lg:min-h-[560px] flex items-center text-white rounded-b-3xl sm:rounded-b-[2.5rem] shadow-2xl">
+        {/* Full Hero Background Photo */}
+        <img
+          src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1920&auto=format&fit=crop&q=95"
+          alt="Happy woman with shopping bags background"
+          className="absolute inset-0 w-full h-full object-cover object-right md:object-center"
+          loading="eager"
+        />
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Hero Content */}
-          <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-white">
+        {/* Ambient Dark Gradient Overlays for Readability & Photo Clarity */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/70 to-slate-950/30 lg:bg-gradient-to-r lg:from-slate-950 lg:via-slate-950/75 lg:to-transparent"></div>
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        {/* Hero Content */}
+        <div className="relative max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+          <div className="max-w-2xl space-y-6 text-center lg:text-left">
+            {/* Top Pill */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/80 backdrop-blur-md border border-emerald-500/30 text-emerald-400 text-xs font-bold shadow-lg">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>New Season Collection 2026</span>
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-white drop-shadow-md">
               Discover Quality Products For{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-200">
                 Every Lifestyle
               </span>
             </h1>
+
+            <p className="text-base sm:text-lg text-slate-200 font-medium max-w-xl mx-auto lg:mx-0 leading-relaxed drop-shadow-sm">
+              Explore authentic products from top international brands. Fast shipping, guaranteed quality, and best prices at Memo.
+            </p>
 
             {/* CTAs */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
               <Link
                 to="/products"
-                className="px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-sm transition-all duration-200 shadow-lg shadow-emerald-500/25 flex items-center gap-2 active:scale-95"
+                className="px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-sm transition-all duration-200 shadow-xl shadow-emerald-500/30 flex items-center gap-2 active:scale-95"
               >
                 <span>Shop All Products</span>
                 <i className="fa-solid fa-arrow-right text-xs"></i>
               </Link>
               <Link
                 to="/catogary"
-                className="px-8 py-4 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 text-white font-bold text-sm border border-slate-700 transition-all duration-200 flex items-center gap-2 active:scale-95"
+                className="px-8 py-4 rounded-xl bg-slate-900/80 hover:bg-slate-800/90 text-white font-bold text-sm border border-slate-700/80 backdrop-blur-md transition-all duration-200 flex items-center gap-2 active:scale-95 shadow-lg"
               >
                 <span>Explore Categories</span>
               </Link>
             </div>
-
-          </div>
-
-          {/* Dynamic Hero Visual Card from API */}
-          <div className="lg:col-span-5 relative flex justify-center">
-            {isLoading || !featuredProduct ? (
-              <div className="w-full max-w-md h-96 bg-slate-800/80 rounded-3xl p-6 border border-slate-700 animate-pulse"></div>
-            ) : (
-              <div className="relative w-full max-w-md bg-gradient-to-tr from-slate-800 to-slate-850 p-6 rounded-3xl border border-slate-700/80 shadow-2xl overflow-hidden">
-                <div className="flex justify-between items-center mb-4">
-                  <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
-                    {featuredProduct.category || "Featured Deal"}
-                  </span>
-                  {discount && discount > 0 && (
-                    <span className="bg-rose-500 text-white text-[11px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">
-                      Save {discount}%
-                    </span>
-                  )}
-                </div>
-
-                {/* Product Visual Mockup */}
-                <div className="h-64 rounded-2xl bg-gradient-to-b from-slate-700/50 to-slate-900/60 flex items-center justify-center p-6 relative overflow-hidden group">
-                  <Link to={`/productdetailes/${featuredProduct.id}`}>
-                    <img
-                      src={featuredProduct.thumbnail}
-                      alt={featuredProduct.title}
-                      className="max-h-52 object-contain filter drop-shadow-xl group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </Link>
-                </div>
-
-                <div className="mt-5 space-y-2">
-                  <div className="flex justify-between items-center">
-                    <Link to={`/productdetailes/${featuredProduct.id}`}>
-                      <h3 className="text-lg font-bold text-white hover:text-emerald-400 transition-colors line-clamp-1">
-                        {featuredProduct.title}
-                      </h3>
-                    </Link>
-                    <div className="text-right shrink-0 ml-2">
-                      <span className="text-xl font-black text-emerald-400">
-                        ${featuredProduct.price}
-                      </span>
-                      {originalPrice && (
-                        <span className="text-xs text-slate-500 line-through ml-2">
-                          ${originalPrice}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <p className="text-slate-400 text-xs leading-relaxed line-clamp-2">
-                    {featuredProduct.description}
-                  </p>
-                </div>
-
-                {/* Floating trust badges */}
-                <div className="mt-5 pt-4 border-t border-slate-700/60 flex justify-between items-center text-xs text-slate-300">
-                  <span className="flex items-center gap-1.5 text-emerald-400 font-semibold">
-                    <i className="fa-solid fa-truck-fast"></i> In Stock & Ships Free
-                  </span>
-                  <Link
-                    to={`/productdetailes/${featuredProduct.id}`}
-                    className="text-xs font-bold text-white hover:text-emerald-400 transition-colors"
-                  >
-                    View Details <i className="fa-solid fa-arrow-right text-[10px]"></i>
-                  </Link>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </section>
