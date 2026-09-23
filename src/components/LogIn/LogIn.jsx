@@ -7,17 +7,11 @@ import { toast } from "react-hot-toast";
 import { CounterContext } from "../../Context/CounterContext.jsx";
 
 export default function Login() {
-  const { setUserLogin, demoLogin } = useContext(CounterContext);
+  const { setUserLogin } = useContext(CounterContext);
   const [apiErr, setApiErr] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-
-  function handleQuickDemoLogin() {
-    demoLogin();
-    toast.success("Welcome! Logged in as Demo Customer");
-    navigate("/");
-  }
 
   function handleLogin(formValues) {
     setIsLoading(true);
@@ -71,36 +65,13 @@ export default function Login() {
             <i className="fa-solid fa-bag-shopping"></i>
           </div>
           <h1 className="text-2xl font-black text-slate-900 tracking-tight">
-            Sign In to NovaStore
+            Sign In to MemoStore
           </h1>
           <p className="text-slate-500 text-xs">
             Access your order history, saved wishlist, and checkout perks
           </p>
         </div>
 
-        {/* 1-Click Demo Login for Khamsat Reviewers */}
-        <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200/80 text-center space-y-2">
-          <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-emerald-800">
-            <i className="fa-solid fa-bolt text-amber-500"></i>
-            <span>Khamsat Client Quick Demo</span>
-          </div>
-          <p className="text-[11px] text-emerald-700 leading-tight">
-            Test full authenticated features with 1-click without creating an account:
-          </p>
-          <button
-            type="button"
-            onClick={handleQuickDemoLogin}
-            className="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-sm transition-all active:scale-95"
-          >
-            ⚡ One-Click Demo Login
-          </button>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <div className="flex-1 h-px bg-slate-200"></div>
-          <span className="text-xs text-slate-400 font-medium">Or continue with email</span>
-          <div className="flex-1 h-px bg-slate-200"></div>
-        </div>
 
         {apiErr && (
           <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-600 text-xs flex items-center gap-2">

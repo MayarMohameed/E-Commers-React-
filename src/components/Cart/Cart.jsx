@@ -49,7 +49,7 @@ export default function Cart() {
   function handleApplyCoupon(e) {
     e.preventDefault();
     const clean = couponCode.trim().toUpperCase();
-    if (clean === "NOVA20" || clean === "KHAMSAT20") {
+    if (clean === "MEMO20" || clean === "NOVA20" || clean === "KHAMSAT20") {
       setDiscountPercent(20);
       setAppliedCoupon(clean);
       toast.success("Coupon applied! 20% discount activated 🎉");
@@ -58,7 +58,7 @@ export default function Cart() {
       setAppliedCoupon(clean);
       toast.success("Coupon applied! 10% discount activated 🎉");
     } else {
-      toast.error("Invalid coupon code. Try 'NOVA20' for 20% off!");
+      toast.error("Invalid coupon code. Try 'MEMO20' for 20% off!");
     }
   }
 
@@ -344,7 +344,7 @@ export default function Cart() {
                 <form onSubmit={handleApplyCoupon} className="flex gap-2">
                   <input
                     type="text"
-                    placeholder="Enter NOVA20"
+                    placeholder="Enter MEMO20"
                     value={couponCode}
                     onChange={(e) => setCouponCode(e.target.value)}
                     className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs uppercase font-mono text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"

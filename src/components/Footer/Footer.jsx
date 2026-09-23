@@ -27,7 +27,7 @@ export default function Footer() {
                 <i className="fa-solid fa-bag-shopping text-lg"></i>
               </div>
               <span className="text-2xl font-black tracking-tight text-white font-sans">
-                Nova<span className="text-emerald-400">Store</span>
+                Memo<span className="text-emerald-400">Store</span>
               </span>
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
@@ -172,7 +172,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <div>
-            © {new Date().getFullYear()} <span className="text-slate-300 font-semibold">NovaStore</span>. Crafted for Khamsat Service Showcase. All Rights Reserved.
+            © {new Date().getFullYear()} <span className="text-slate-300 font-semibold">Memo</span>. Crafted for Khamsat Service Showcase. All Rights Reserved.
           </div>
           {/* Payment Badges */}
           <div className="flex items-center gap-3 text-slate-400 text-lg">

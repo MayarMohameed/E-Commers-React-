@@ -114,7 +114,7 @@ export default function Products() {
       <div className="bg-slate-900 rounded-3xl p-8 sm:p-10 text-white relative overflow-hidden shadow-lg">
         <div className="relative z-10 max-w-2xl space-y-2">
           <span className="text-emerald-400 text-xs font-bold uppercase tracking-wider">
-            NovaStore Collection
+            Memo Collection
           </span>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight">
             Explore All Products

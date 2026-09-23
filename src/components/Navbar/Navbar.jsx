@@ -78,7 +78,7 @@ export default function Navbar() {
             </div>
             <div>
               <span className="text-2xl font-black tracking-tight text-slate-900 font-sans">
-                Nova<span className="text-emerald-600">Store</span>
+                Memo<span className="text-emerald-600">Store</span>
               </span>
               <span className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 -mt-1">
                 E-Commerce

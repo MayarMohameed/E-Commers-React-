@@ -311,7 +311,7 @@ export default function ProductDetailes() {
             <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-xs">
               <i className="fa-solid fa-shield-halved text-indigo-600 text-base mb-1 block"></i>
               <span className="text-[11px] font-bold text-slate-800 block">100% Authentic</span>
-              <span className="text-[10px] text-slate-400">Verified by NovaStore</span>
+              <span className="text-[10px] text-slate-400">Verified by Memo</span>
             </div>
           </div>
         </div>
@@ -372,11 +372,11 @@ export default function ProductDetailes() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl text-sm">
               <div className="p-3 bg-slate-50 rounded-xl flex justify-between">
                 <span className="text-slate-500 font-medium">SKU:</span>
-                <span className="font-bold text-slate-800">{product.sku || `NOVA-${product.id}`}</span>
+                <span className="font-bold text-slate-800">{product.sku || `MEMO-${product.id}`}</span>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl flex justify-between">
                 <span className="text-slate-500 font-medium">Brand:</span>
-                <span className="font-bold text-slate-800">{product.brand || "Nova Signature"}</span>
+                <span className="font-bold text-slate-800">{product.brand || "Memo Signature"}</span>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl flex justify-between">
                 <span className="text-slate-500 font-medium">Weight:</span>

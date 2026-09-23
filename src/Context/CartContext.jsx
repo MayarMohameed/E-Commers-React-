@@ -6,7 +6,7 @@ export const CartContext = createContext(null);
 export function CartContextProvider({ children }) {
   const [cartItems, setCartItems] = useState(() => {
     try {
-      const saved = localStorage.getItem("nova_cart");
+      const saved = localStorage.getItem("memo_cart") || localStorage.getItem("nova_cart");
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -15,7 +15,7 @@ export function CartContextProvider({ children }) {
 
   const [wishlist, setWishlist] = useState(() => {
     try {
-      const saved = localStorage.getItem("nova_wishlist");
+      const saved = localStorage.getItem("memo_wishlist") || localStorage.getItem("nova_wishlist");
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -25,7 +25,7 @@ export function CartContextProvider({ children }) {
   // Keep localStorage synced
   useEffect(() => {
     try {
-      localStorage.setItem("nova_cart", JSON.stringify(cartItems));
+      localStorage.setItem("memo_cart", JSON.stringify(cartItems));
     } catch (e) {
       console.error("Failed to save cart to localStorage", e);
     }
@@ -33,7 +33,7 @@ export function CartContextProvider({ children }) {
 
   useEffect(() => {
     try {
-      localStorage.setItem("nova_wishlist", JSON.stringify(wishlist));
+      localStorage.setItem("memo_wishlist", JSON.stringify(wishlist));
     } catch (e) {
       console.error("Failed to save wishlist to localStorage", e);
     }

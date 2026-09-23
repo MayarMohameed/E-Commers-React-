@@ -80,7 +80,7 @@ export default function Register() {
             <i className="fa-solid fa-user-plus"></i>
           </div>
           <h1 className="text-2xl font-black text-slate-900 tracking-tight">
-            Create an Account
+            Create your MemoStore Account
           </h1>
           <p className="text-slate-500 text-xs">
             Join thousands of shoppers and enjoy exclusive discounts & free shipping

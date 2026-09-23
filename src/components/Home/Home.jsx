@@ -198,7 +198,7 @@ export default function Home() {
               Get 20% Off Your Entire Order
             </h2>
             <p className="text-emerald-100 text-sm sm:text-base leading-relaxed">
-              Use promo coupon code <strong className="bg-slate-900 text-emerald-300 px-2.5 py-1 rounded-md font-mono text-sm ml-1">NOVA20</strong> at checkout to claim your instant savings.
+              Use promo coupon code <strong className="bg-slate-900 text-emerald-300 px-2.5 py-1 rounded-md font-mono text-sm ml-1">MEMO20</strong> at checkout to claim your instant savings.
             </p>
             <div className="pt-2">
               <Link
