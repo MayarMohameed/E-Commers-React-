@@ -1,125 +1,68 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
-const brandsList = [
-  {
-    name: "Apple",
-    category: "Smartphones & Laptops",
-    icon: "fa-apple",
-    isBrandIcon: true,
-    color: "from-slate-900 to-slate-700",
-    description: "Innovators in personal technology with iPhone, MacBook, and iPad ecosystems.",
-    verified: true,
-    productsCount: "48+ Products",
-  },
-  {
-    name: "Samsung",
-    category: "Smart Devices & Displays",
-    icon: "fa-mobile-screen-button",
-    color: "from-blue-600 to-indigo-700",
-    description: "Global pioneer in mobile smartphones, QLED TVs, and smart home appliances.",
-    verified: true,
-    productsCount: "62+ Products",
-  },
-  {
-    name: "Nike",
-    category: "Sportswear & Footwear",
-    icon: "fa-person-running",
-    color: "from-orange-600 to-red-600",
-    description: "World leader in performance athletic wear, lifestyle sneakers, and fitness gear.",
-    verified: true,
-    productsCount: "85+ Products",
-  },
-  {
-    name: "L'Oréal",
-    category: "Cosmetics & Skincare",
-    icon: "fa-wand-magic-sparkles",
-    color: "from-rose-500 to-pink-600",
-    description: "World-renowned French beauty house crafting premium cosmetics and dermatologist care.",
-    verified: true,
-    productsCount: "35+ Products",
-  },
-  {
-    name: "Sony",
-    category: "Audio & Entertainment",
-    icon: "fa-headphones",
-    color: "from-slate-800 to-zinc-900",
-    description: "Industry standard high-resolution wireless audio, noise cancellation, and gaming.",
-    verified: true,
-    productsCount: "40+ Products",
-  },
-  {
-    name: "Dior",
-    category: "Luxury Fragrances",
-    icon: "fa-spray-can-sparkles",
-    color: "from-purple-600 to-violet-700",
-    description: "Iconic haute couture and signature French fragrances celebrated worldwide.",
-    verified: true,
-    productsCount: "28+ Products",
-  },
-  {
-    name: "Rolex",
-    category: "Luxury Watches",
-    icon: "fa-crown",
-    color: "from-amber-600 to-yellow-600",
-    description: "Swiss luxury watchmaker renowned for precision chronometers and timeless elegance.",
-    verified: true,
-    productsCount: "18+ Products",
-  },
-  {
-    name: "Dell",
-    category: "Computers & Monitors",
-    icon: "fa-laptop",
-    color: "from-sky-600 to-blue-700",
-    description: "Reliable business laptops, XPS ultrabooks, and high-definition office displays.",
-    verified: true,
-    productsCount: "32+ Products",
-  },
-  {
-    name: "Gucci",
-    category: "Fashion & Bags",
-    icon: "fa-bag-shopping",
-    color: "from-emerald-700 to-teal-800",
-    description: "Italian luxury fashion house influential in modern leather goods and runway apparel.",
-    verified: true,
-    productsCount: "22+ Products",
-  },
-  {
-    name: "Asus",
-    category: "Gaming & Tech",
-    icon: "fa-microchip",
-    color: "from-red-600 to-rose-700",
-    description: "Creator of ROG Republic of Gamers hardware, motherboards, and gaming rigs.",
-    verified: true,
-    productsCount: "29+ Products",
-  },
-  {
-    name: "Zara",
-    category: "Modern Apparel",
-    icon: "fa-shirt",
-    color: "from-zinc-800 to-slate-900",
-    description: "Contemporary Spanish fashion retailer bringing runway trends to daily life.",
-    verified: true,
-    productsCount: "54+ Products",
-  },
-  {
-    name: "Dyson",
-    category: "Home & Care Tech",
-    icon: "fa-wind",
-    color: "from-fuchsia-600 to-pink-600",
-    description: "Revolutionary engineering in cordless vacuums, supersonic hair care, and purifiers.",
-    verified: true,
-    productsCount: "16+ Products",
-  },
-];
+import axios from "axios";
 
 export default function Brands() {
+  const [brands, setBrands] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
-  const filtered = brandsList.filter(
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get("https://dummyjson.com/products?limit=100")
+      .then((res) => {
+        const products = res.data?.products || [];
+        const brandsMap = {};
+
+        products.forEach((p) => {
+          // Some products have empty brand, fallback to brand or capitalized category
+          const brandName = p.brand ? p.brand.trim() : null;
+          if (brandName) {
+            if (!brandsMap[brandName]) {
+              brandsMap[brandName] = {
+                name: brandName,
+                categories: new Set(),
+                productsCount: 0,
+                sampleProduct: p,
+                ratings: [],
+              };
+            }
+            if (p.category) brandsMap[brandName].categories.add(p.category);
+            brandsMap[brandName].productsCount += 1;
+            if (p.rating) brandsMap[brandName].ratings.push(p.rating);
+          }
+        });
+
+        const list = Object.values(brandsMap).map((b) => {
+          const avgRating =
+            b.ratings.length > 0
+              ? (b.ratings.reduce((acc, r) => acc + r, 0) / b.ratings.length).toFixed(1)
+              : "4.8";
+          return {
+            name: b.name,
+            categories: Array.from(b.categories).slice(0, 2).join(" • "),
+            productsCount: `${b.productsCount} ${b.productsCount === 1 ? "Product" : "Products"}`,
+            sampleProduct: b.sampleProduct,
+            avgRating,
+          };
+        });
+
+        // Sort by product count
+        list.sort((a, b) => parseInt(b.productsCount) - parseInt(a.productsCount));
+        setBrands(list);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to load brands from API", err);
+        setLoading(false);
+      });
+  }, []);
+
+  const filtered = brands.filter(
     (b) =>
       b.name.toLowerCase().includes(search.toLowerCase()) ||
-      b.category.toLowerCase().includes(search.toLowerCase())
+      b.categories.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -128,13 +71,13 @@ export default function Brands() {
       <div className="bg-slate-900 rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden shadow-lg">
         <div className="relative z-10 max-w-2xl space-y-3">
           <span className="text-emerald-400 text-xs font-bold uppercase tracking-wider">
-            Official Partnerships
+            API Verified Catalog
           </span>
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight">
-            Top Global Brands
+            Top Brands in Store
           </h1>
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-            Shop directly from our verified brand partners. 100% authentic merchandise backed by official manufacturer warranties and fast shipping.
+            Directly sourced brands and manufacturers from our global API catalog. Explore verified merchandise with full authenticity guarantee.
           </p>
         </div>
         <div className="absolute right-0 bottom-0 top-0 w-1/2 opacity-10 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px]"></div>
@@ -144,7 +87,7 @@ export default function Brands() {
       <div className="max-w-md mx-auto relative">
         <input
           type="text"
-          placeholder="Filter brands (e.g. Apple, Nike, Samsung)..."
+          placeholder="Filter brands (e.g. Apple, Essence, Calvin Klein)..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full bg-white border border-slate-200 text-sm rounded-2xl py-3 pl-11 pr-4 text-slate-800 shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500 transition-all"
@@ -152,57 +95,73 @@ export default function Brands() {
         <i className="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400 text-sm"></i>
       </div>
 
-      {/* Brands Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filtered.map((brand) => (
-          <div
-            key={brand.name}
-            className="group bg-white rounded-2xl border border-slate-200/80 p-6 hover:shadow-xl hover:border-emerald-500/40 transition-all duration-300 flex flex-col justify-between"
-          >
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <div
-                  className={`w-14 h-14 rounded-2xl bg-gradient-to-tr ${brand.color} text-white flex items-center justify-center text-xl shadow-md group-hover:scale-110 transition-transform duration-300`}
-                >
-                  <i
-                    className={`${
-                      brand.isBrandIcon ? "fa-brands" : "fa-solid"
-                    } ${brand.icon}`}
-                  ></i>
-                </div>
-                {brand.verified && (
-                  <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
-                    <i className="fa-solid fa-circle-check"></i> Verified
+      {/* Brands Grid from API */}
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className="h-56 bg-slate-200 rounded-2xl animate-pulse"></div>
+          ))}
+        </div>
+      ) : filtered.length === 0 ? (
+        <div className="bg-white rounded-3xl p-16 text-center border border-slate-200 space-y-4">
+          <div className="w-16 h-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto text-2xl">
+            <i className="fa-solid fa-magnifying-glass"></i>
+          </div>
+          <h3 className="text-xl font-bold text-slate-900">No brands found</h3>
+          <p className="text-slate-500 text-sm">Try searching with a different brand name.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {filtered.map((brand) => (
+            <div
+              key={brand.name}
+              className="group bg-white rounded-2xl border border-slate-200/80 p-5 hover:shadow-xl hover:border-emerald-500/40 transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                {/* Brand Preview Image from API Product */}
+                <div className="relative h-36 bg-slate-50 rounded-xl overflow-hidden mb-4 p-3 flex items-center justify-center border border-slate-100">
+                  <img
+                    src={brand.sampleProduct?.thumbnail}
+                    alt={brand.name}
+                    className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <span className="absolute top-2.5 right-2.5 inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-white/90 backdrop-blur-xs px-2 py-0.5 rounded-full shadow-2xs">
+                    <i className="fa-solid fa-star text-amber-400 text-[9px]"></i>
+                    {brand.avgRating}
                   </span>
-                )}
+                </div>
+
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-base font-black text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-1">
+                      {brand.name}
+                    </h3>
+                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
+                      Verified
+                    </span>
+                  </div>
+                  <span className="text-xs font-semibold text-slate-500 block capitalize truncate">
+                    {brand.categories || "Multiple Departments"}
+                  </span>
+                </div>
               </div>
 
-              <h3 className="text-xl font-black text-slate-900 group-hover:text-emerald-600 transition-colors">
-                {brand.name}
-              </h3>
-              <span className="text-xs font-semibold text-emerald-600 block mt-0.5">
-                {brand.category}
-              </span>
-              <p className="text-slate-500 text-xs mt-2 leading-relaxed">
-                {brand.description}
-              </p>
+              <div className="pt-4 mt-3 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-xs text-slate-400 font-medium">
+                  {brand.productsCount}
+                </span>
+                <Link
+                  to={`/products?search=${encodeURIComponent(brand.name)}`}
+                  className="text-xs font-bold text-slate-900 hover:text-emerald-600 flex items-center gap-1 group-hover:translate-x-1 transition-transform"
+                >
+                  <span>View Products</span>
+                  <i className="fa-solid fa-arrow-right text-[10px]"></i>
+                </Link>
+              </div>
             </div>
-
-            <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between">
-              <span className="text-xs text-slate-400 font-medium">
-                {brand.productsCount}
-              </span>
-              <Link
-                to={`/products?search=${encodeURIComponent(brand.name)}`}
-                className="text-xs font-bold text-slate-900 hover:text-emerald-600 flex items-center gap-1 group-hover:translate-x-1 transition-transform"
-              >
-                <span>View Products</span>
-                <i className="fa-solid fa-arrow-right text-[10px]"></i>
-              </Link>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

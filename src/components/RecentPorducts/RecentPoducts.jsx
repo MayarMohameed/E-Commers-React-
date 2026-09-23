@@ -102,14 +102,16 @@ export default function RecentPorducts() {
           </p>
         </div>
 
-        {/* Filter Pills */}
+        {/* Filter Pills from API */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 no-scrollbar">
           {[
             { id: "all", label: "All Items" },
-            { id: "beauty", label: "Beauty" },
-            { id: "fragrances", label: "Fragrances" },
-            { id: "furniture", label: "Furniture" },
-            { id: "groceries", label: "Groceries" },
+            ...Array.from(new Set(products.map((p) => p.category).filter(Boolean)))
+              .slice(0, 6)
+              .map((cat) => ({
+                id: cat,
+                label: cat.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+              })),
           ].map((pill) => (
             <button
               key={pill.id}
@@ -184,11 +186,11 @@ export default function RecentPorducts() {
                   {/* Category & Rating */}
                   <div className="flex items-center justify-between gap-2 mb-2">
                     <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
-                      {product.category || "General"}
+                      {product.category}
                     </span>
                     <div className="flex items-center gap-1 text-xs font-semibold text-slate-700">
                       <i className="fa-solid fa-star text-amber-400 text-xs"></i>
-                      <span>{product.rating || "4.5"}</span>
+                      <span>{product.rating}</span>
                     </div>
                   </div>
 

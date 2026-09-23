@@ -292,11 +292,11 @@ export default function Products() {
                   <div className="p-5">
                     <div className="flex items-center justify-between gap-2 mb-2">
                       <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
-                        {product.category || "General"}
+                        {product.category}
                       </span>
                       <div className="flex items-center gap-1 text-xs font-semibold text-slate-700">
                         <i className="fa-solid fa-star text-amber-400 text-xs"></i>
-                        <span>{product.rating || "4.5"}</span>
+                        <span>{product.rating}</span>
                       </div>
                     </div>
 

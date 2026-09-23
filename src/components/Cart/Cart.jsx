@@ -149,34 +149,7 @@ export default function Cart() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Cart Items List */}
         <div className="lg:col-span-8 space-y-4">
-          {/* Free Shipping Alert Bar */}
-          <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2">
-            <div className="flex items-center justify-between text-xs font-bold">
-              <span className="flex items-center gap-1.5 text-slate-800">
-                <i className="fa-solid fa-truck-fast text-emerald-600"></i>
-                {isFreeShipping ? (
-                  <span className="text-emerald-700">Congratulations! You unlocked FREE shipping!</span>
-                ) : (
-                  <span>
-                    Add ${(shippingThreshold - subtotal).toFixed(2)} more to unlock{" "}
-                    <strong className="text-emerald-600">FREE Shipping</strong>
-                  </span>
-                )}
-              </span>
-              <span className="text-slate-400">
-                ${Math.min(subtotal, shippingThreshold).toFixed(0)} / ${shippingThreshold}
-              </span>
-            </div>
-            {/* Progress bar */}
-            <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
-              <div
-                className="h-full bg-emerald-500 transition-all duration-500 rounded-full"
-                style={{
-                  width: `${Math.min(100, (subtotal / shippingThreshold) * 100)}%`,
-                }}
-              ></div>
-            </div>
-          </div>
+
 
           {/* Items Container */}
           <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xs divide-y divide-slate-100 overflow-hidden">

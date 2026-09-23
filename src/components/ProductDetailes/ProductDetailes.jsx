@@ -11,7 +11,6 @@ export default function ProductDetailes() {
   const [selectedImage, setSelectedImage] = useState("");
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState("description");
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [addingToCart, setAddingToCart] = useState(false);
 
@@ -208,10 +207,14 @@ export default function ProductDetailes() {
                 ))}
                 <span className="text-slate-800 font-bold ml-1">{product.rating}</span>
               </div>
-              <span className="text-slate-300">|</span>
-              <span className="text-slate-500">
-                {product.reviews?.length || 24} Verified Customer Reviews
-              </span>
+              {product.reviews && product.reviews.length > 0 && (
+                <>
+                  <span className="text-slate-300">|</span>
+                  <span className="text-slate-500">
+                    {product.reviews.length} Customer Reviews
+                  </span>
+                </>
+              )}
               <span className="text-slate-300">|</span>
               <span className="inline-flex items-center gap-1 text-emerald-600 font-semibold text-xs">
                 <i className="fa-solid fa-circle-check"></i>
@@ -296,143 +299,32 @@ export default function ProductDetailes() {
             </div>
           </div>
 
-          {/* Perks Guarantee Strip */}
-          <div className="grid grid-cols-3 gap-3 pt-4 border-t border-slate-200 text-center">
-            <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-xs">
-              <i className="fa-solid fa-truck-fast text-emerald-600 text-base mb-1 block"></i>
-              <span className="text-[11px] font-bold text-slate-800 block">Free Shipping</span>
-              <span className="text-[10px] text-slate-400">On this product</span>
-            </div>
-            <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-xs">
-              <i className="fa-solid fa-rotate-left text-teal-600 text-base mb-1 block"></i>
-              <span className="text-[11px] font-bold text-slate-800 block">30 Days Returns</span>
-              <span className="text-[10px] text-slate-400">Hassle-free guarantee</span>
-            </div>
-            <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-xs">
-              <i className="fa-solid fa-shield-halved text-indigo-600 text-base mb-1 block"></i>
-              <span className="text-[11px] font-bold text-slate-800 block">100% Authentic</span>
-              <span className="text-[10px] text-slate-400">Verified by Memo</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Tabs Section: Description, Specifications, Reviews */}
-      <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-xs">
-        {/* Tab Headers */}
-        <div className="flex border-b border-slate-200 gap-6">
-          <button
-            onClick={() => setActiveTab("description")}
-            className={`pb-4 text-sm font-bold transition-all relative ${
-              activeTab === "description"
-                ? "text-emerald-600 border-b-2 border-emerald-600"
-                : "text-slate-500 hover:text-slate-800"
-            }`}
-          >
-            Description & Highlights
-          </button>
-          <button
-            onClick={() => setActiveTab("specs")}
-            className={`pb-4 text-sm font-bold transition-all relative ${
-              activeTab === "specs"
-                ? "text-emerald-600 border-b-2 border-emerald-600"
-                : "text-slate-500 hover:text-slate-800"
-            }`}
-          >
-            Technical Specifications
-          </button>
-          <button
-            onClick={() => setActiveTab("reviews")}
-            className={`pb-4 text-sm font-bold transition-all relative ${
-              activeTab === "reviews"
-                ? "text-emerald-600 border-b-2 border-emerald-600"
-                : "text-slate-500 hover:text-slate-800"
-            }`}
-          >
-            Customer Reviews ({product.reviews?.length || 0})
-          </button>
-        </div>
-
-        {/* Tab Content */}
-        <div className="pt-6">
-          {activeTab === "description" && (
-            <div className="space-y-4 max-w-3xl text-sm text-slate-600 leading-relaxed">
-              <p>{product.description}</p>
-              <h4 className="font-bold text-slate-800 text-base pt-2">Key Highlights:</h4>
-              <ul className="space-y-2 list-disc list-inside text-slate-600">
-                <li>Engineered with premium materials for maximum durability and performance.</li>
-                <li>Designed in accordance with global quality standards.</li>
-                <li>Comes in official manufacturer packaging with full security seals.</li>
-                <li>Backed by manufacturer warranty and 30-day money-back satisfaction guarantee.</li>
-              </ul>
-            </div>
-          )}
-
-          {activeTab === "specs" && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl text-sm">
-              <div className="p-3 bg-slate-50 rounded-xl flex justify-between">
-                <span className="text-slate-500 font-medium">SKU:</span>
-                <span className="font-bold text-slate-800">{product.sku || `MEMO-${product.id}`}</span>
-              </div>
-              <div className="p-3 bg-slate-50 rounded-xl flex justify-between">
-                <span className="text-slate-500 font-medium">Brand:</span>
-                <span className="font-bold text-slate-800">{product.brand || "Memo Signature"}</span>
-              </div>
-              <div className="p-3 bg-slate-50 rounded-xl flex justify-between">
-                <span className="text-slate-500 font-medium">Weight:</span>
-                <span className="font-bold text-slate-800">{product.weight ? `${product.weight} kg` : "0.5 kg"}</span>
-              </div>
-              <div className="p-3 bg-slate-50 rounded-xl flex justify-between">
-                <span className="text-slate-500 font-medium">Warranty:</span>
-                <span className="font-bold text-slate-800">{product.warrantyInformation || "1 Year Official Warranty"}</span>
-              </div>
-              <div className="p-3 bg-slate-50 rounded-xl flex justify-between">
-                <span className="text-slate-500 font-medium">Shipping Info:</span>
-                <span className="font-bold text-slate-800">{product.shippingInformation || "Ships in 1-2 business days"}</span>
-              </div>
-              <div className="p-3 bg-slate-50 rounded-xl flex justify-between">
-                <span className="text-slate-500 font-medium">Return Policy:</span>
-                <span className="font-bold text-slate-800">{product.returnPolicy || "30-day return policy"}</span>
-              </div>
-            </div>
-          )}
-
-          {activeTab === "reviews" && (
-            <div className="space-y-4 max-w-3xl">
-              {product.reviews && product.reviews.length > 0 ? (
-                product.reviews.map((rev, i) => (
-                  <div key={i} className="p-4 rounded-2xl bg-slate-50 border border-slate-100 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">
-                          {rev.reviewerName?.slice(0, 1) || "U"}
-                        </div>
-                        <span className="font-bold text-sm text-slate-800">{rev.reviewerName}</span>
-                      </div>
-                      <div className="flex items-center text-amber-400 text-xs gap-1">
-                        {[...Array(5)].map((_, s) => (
-                          <i
-                            key={s}
-                            className={`fa-solid fa-star ${
-                              s < rev.rating ? "text-amber-400" : "text-slate-200"
-                            }`}
-                          ></i>
-                        ))}
-                      </div>
-                    </div>
-                    <p className="text-slate-600 text-xs leading-relaxed">{rev.comment}</p>
-                    <span className="text-[10px] text-slate-400 block">
-                      {new Date(rev.date).toLocaleDateString()} • Verified Buyer
-                    </span>
-                  </div>
-                ))
-              ) : (
-                <p className="text-slate-500 text-sm">No reviews yet for this product. Be the first to leave one!</p>
+          {/* Perks from API */}
+          {(product.shippingInformation || product.returnPolicy || product.warrantyInformation) && (
+            <div className="grid grid-cols-3 gap-3 pt-4 border-t border-slate-200 text-center">
+              {product.shippingInformation && (
+                <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-xs">
+                  <i className="fa-solid fa-truck-fast text-emerald-600 text-base mb-1 block"></i>
+                  <span className="text-[11px] font-bold text-slate-800 block line-clamp-1">{product.shippingInformation}</span>
+                </div>
+              )}
+              {product.returnPolicy && (
+                <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-xs">
+                  <i className="fa-solid fa-rotate-left text-teal-600 text-base mb-1 block"></i>
+                  <span className="text-[11px] font-bold text-slate-800 block line-clamp-1">{product.returnPolicy}</span>
+                </div>
+              )}
+              {product.warrantyInformation && (
+                <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-xs">
+                  <i className="fa-solid fa-shield-halved text-indigo-600 text-base mb-1 block"></i>
+                  <span className="text-[11px] font-bold text-slate-800 block line-clamp-1">{product.warrantyInformation}</span>
+                </div>
               )}
             </div>
           )}
         </div>
       </div>
+
 
       {/* Related Products Carousel */}
       {relatedProducts.length > 0 && (

@@ -6,7 +6,7 @@ import { toast } from "react-hot-toast";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const { userLogin, userName, logout, demoLogin } = useContext(CounterContext);
+  const { userLogin, logout } = useContext(CounterContext);
   const { cartCount, wishlistCount } = useContext(CartContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,12 +15,6 @@ export default function Navbar() {
     logout();
     toast.success("Logged out successfully");
     navigate("/login");
-  }
-
-  function handleQuickDemoLogin() {
-    demoLogin();
-    toast.success("Welcome! Logged in as Demo Customer");
-    navigate("/");
   }
 
   function handleSearchSubmit(e) {
@@ -42,31 +36,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 shadow-xs bg-white/95 backdrop-blur-md border-b border-slate-200/80">
-      {/* Top promotional bar */}
-      <div className="bg-slate-900 text-white text-xs py-2 px-4">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <span className="bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
-              Khamsat Ready
-            </span>
-            <span className="hidden sm:inline text-slate-300">
-              ⚡ Up to 50% Off Top Brands + Free Worldwide Shipping over $50
-            </span>
-            <span className="sm:hidden text-slate-300 truncate">
-              ⚡ Free Shipping over $50
-            </span>
-          </div>
-          <div className="flex items-center gap-4 text-slate-300 text-xs">
-            <span className="hidden md:flex items-center gap-1">
-              <i className="fa-solid fa-headset text-emerald-400"></i> 24/7 Support
-            </span>
-            <span className="hidden md:inline">|</span>
-            <span className="flex items-center gap-1 text-emerald-400 font-medium">
-              <i className="fa-solid fa-shield-halved"></i> 100% Secure Checkout
-            </span>
-          </div>
-        </div>
-      </div>
+
 
       {/* Main Navbar */}
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -161,35 +131,28 @@ export default function Navbar() {
             {/* User Account / Auth buttons */}
             {userLogin ? (
               <div className="flex items-center gap-2">
-                <div className="hidden xl:flex flex-col text-right">
-                  <span className="text-xs font-semibold text-slate-900 leading-tight">
-                    {userName || "Customer"}
-                  </span>
-                  <span className="text-[11px] text-emerald-600 font-medium">Active User</span>
-                </div>
                 <button
                   onClick={handleLogout}
                   className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-lg transition-colors border border-rose-200/60"
                   title="Logout"
                 >
                   <i className="fa-solid fa-arrow-right-from-bracket"></i>
-                  <span className="hidden sm:inline">Logout</span>
+                  <span>Logout</span>
                 </button>
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <button
-                  onClick={handleQuickDemoLogin}
-                  className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-emerald-700 bg-emerald-100/80 hover:bg-emerald-200 rounded-lg transition-all shadow-xs"
-                  title="Quick Demo Login for Preview"
-                >
-                  <i className="fa-solid fa-bolt text-amber-500"></i> Demo Login
-                </button>
                 <Link
                   to="/login"
                   className="px-3.5 py-2 text-xs font-bold text-white bg-slate-900 hover:bg-emerald-600 rounded-lg transition-all duration-200 shadow-sm"
                 >
                   Sign In
+                </Link>
+                <Link
+                  to="/register"
+                  className="hidden sm:inline-block px-3.5 py-2 text-xs font-bold text-slate-700 hover:text-emerald-700 bg-slate-100 hover:bg-emerald-50 rounded-lg transition-all duration-200 border border-slate-200"
+                >
+                  Register
                 </Link>
               </div>
             )}
@@ -264,17 +227,15 @@ export default function Navbar() {
               </NavLink>
             </div>
 
-            {!userLogin && (
+            {!userLogin ? (
               <div className="pt-2 border-t border-slate-100 flex gap-2">
-                <button
-                  onClick={() => {
-                    handleQuickDemoLogin();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="flex-1 py-2 text-center text-xs font-bold text-emerald-700 bg-emerald-100 rounded-lg"
+                <Link
+                  to="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex-1 py-2 text-center text-xs font-bold text-white bg-slate-900 rounded-lg"
                 >
-                  ⚡ Demo Login
-                </button>
+                  Sign In
+                </Link>
                 <Link
                   to="/register"
                   onClick={() => setMobileMenuOpen(false)}
@@ -282,6 +243,18 @@ export default function Navbar() {
                 >
                   Register
                 </Link>
+              </div>
+            ) : (
+              <div className="pt-2 border-t border-slate-100">
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="w-full py-2 text-center text-xs font-bold text-rose-600 bg-rose-50 rounded-lg"
+                >
+                  Logout
+                </button>
               </div>
             )}
           </div>
